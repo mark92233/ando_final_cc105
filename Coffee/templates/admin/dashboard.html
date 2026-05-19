@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Autonomous Retail Ecosystem{% endblock %}
+
+{% block content %}
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-6 pb-4 border-b border-white/10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div>
+                <h1 class="text-3xl font-black uppercase italic">System <span class="text-[#50fa7b]">Dashboard</span></h1>
+                <p class="text-white/50 mono text-sm mt-1">Authentication successful. Logged in as Administrator.</p>
+            </div>
+        </div>
+
+        <!-- CONTROLS: BRANCH & SHIFT FILTER BUTTONS -->
+        <div class="flex flex-wrap items-center gap-4 mb-6 pb-4 border-b border-white/10">
+            <!-- Branch Toggles -->
+            <div class="flex flex-wrap gap-2">
+                <span class="text-white/30 mono text-[10px] uppercase tracking-widest font-bold self-center mr-1">Location:</span>
+                {% for b in branches %}
+                <button class="branch-filter-btn {% if forloop.first %}bg-[#50fa7b] text-black border border-transparent shadow-[0_0_15px_rgba(80,250,123,0.2)]{% else %}bg-black/40 text-white/50 border border-white/10 hover:border-[#ff79c6] hover:text-[#ff79c6]{% endif %} px-4 py-1.5 rounded-lg font-black text-[10px] uppercase tracking-widest transition-all hover:scale-105" data-target-branch="{{ b.slug }}">
+                    {{ b.name }}
+                </button>
+                {% endfor %}
+            </div>
+            <!-- Shift Toggles -->
+            <div class="flex flex-wrap gap-2">
+                <span class="text-white/30 mono text-[10px] uppercase tracking-widest font-bold self-center mr-1 text-right" style="min-width: 40px;">Shift:</span>
+                {% for s in shifts %}
+                <button class="shift-filter-btn {% if forloop.first %}bg-[#ff79c6] text-black border border-transparent shadow-[0_0_15px_rgba(255,121,198,0.2)]{% else %}bg-black/40 text-white/50 border border-white/10 hover:border-[#50fa7b] hover:text-[#50fa7b]{% endif %} px-4 py-1.5 rounded-lg font-black text-[10px] uppercase tracking-widest transition-all hover:scale-105" data-target-shift="{{ s.slug }}">
+                    {{ s.name }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="branchDataContainers">
+            {% for data in dashboard_data %}
+            <div class="dashboard-card" data-branch="{{ data.branch_slug }}" data-shift="{{ data.shift_slug }}" {% if not forloop.first %}style="display: none;"{% endif %}>
+                
+                {% if data.input_summary %}
+                {% if data.is_previewing_this_card %}
+                <div class="w-full mb-4">
+                    <form method="POST" action="{% url 'temp_dashboard' %}" class="flex items-center justify-between bg-black/20 p-2 rounded-lg border border-green-500/30">
+                        {% csrf_token %}
+                        <p class="text-green-400 text-xs mono font-bold ml-2">> PREVIEW MODE: This is an unsaved forecast based on your manual input.</p>
+                        <div class="flex items-center gap-2">
+                            <button type="submit" name="action" value="reset" class="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-400 hover:text-black border border-yellow-500/50 px-4 py-1.5 rounded-lg font-bold uppercase tracking-widest text-[10px] transition-all duration-300">
+                                Reset
+                            </button>
+                            <button type="submit" name="action" value="save" class="bg-green-500/20 text-green-400 hover:bg-green-400 hover:text-black border border-green-500/50 px-4 py-1.5 rounded-lg font-bold uppercase tracking-widest text-[10px] transition-all duration-300">
+                                Save Forecast
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+
+                <!-- INPUT SUMMARY -->
+                <div class="glass p-3 rounded-xl border-white/10 mb-4 relative group flex flex-wrap gap-4 justify-between items-center {% if data.is_previewing_this_card %}border-green-500/30 shadow-[0_0_15px_rgba(80,250,123,0.1)]{% endif %}">
+                    <h3 class="text-white/80 font-black mono text-xs uppercase tracking-wider w-full md:w-auto">> Forecast Inputs</h3>
+                    <div class="flex flex-wrap gap-2 text-xs mono w-full md:w-auto flex-1 md:justify-end">
+                        <div class="bg-black/40 px-2 py-1 rounded border border-white/5">
+                            <span class="text-white/40 uppercase text-[10px]">Date:</span>
+                            <span class="text-[#50fa7b] ml-1">{{ data.input_summary.target_date }}</span>
+                        </div>
+                        <div class="bg-black/40 px-2 py-1 rounded border border-white/5">
+                            <span class="text-white/40 uppercase text-[10px]">Loc:</span>
+                            <span class="text-[#50fa7b] ml-1">{{ data.input_summary.store_location }}</span>
+                        </div>
+                        <div class="bg-black/40 px-2 py-1 rounded border border-white/5">
+                            <span class="text-white/40 uppercase text-[10px]">Shift:</span>
+                            <span class="text-[#50fa7b] ml-1">{{ data.input_summary.shift }}</span>
+                        </div>
+                        <div class="bg-black/40 px-2 py-1 rounded border border-white/5">
+                            <span class="text-white/40 uppercase text-[10px]">Prev Cups:</span>
+                            <span class="text-[#ff79c6] ml-1">{{ data.input_summary.prev_cups }}</span>
+                        </div>
+                        <div class="bg-black/40 px-2 py-1 rounded border border-white/5">
+                            <span class="text-white/40 uppercase text-[10px]">Prev Rev:</span>
+                            <span class="text-[#ff79c6] ml-1">${{ data.input_summary.prev_revenue }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% elif not data.is_stale %}
+                <div class="glass p-3 rounded-xl border-white/10 mb-4 relative group">
+                    <p class="text-white/50 mono text-xs">No prediction input data available for {{ data.branch }} ({{ data.shift }} Shift). Please add data via Manual Input.</p>
+                </div>
+                {% endif %}
+
+                {% if data.is_stale %}
+                <div class="bg-yellow-500/10 border border-yellow-500/30 p-3 rounded-xl mb-4 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-2">
+                        <div class="text-yellow-400 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-yellow-400 font-bold mono uppercase tracking-wider text-[10px] mb-0.5">> Data Sync Warning</h3>
+                            <p class="text-white/70 text-[10px]">Dataset is out of date. Manual input required for accurate forecast.</p>
+                        </div>
+                    </div>
+                    <button class="open-sync-modal bg-yellow-500/20 text-yellow-400 hover:bg-yellow-400 hover:text-black border border-yellow-500/50 px-3 py-1.5 rounded font-bold uppercase tracking-widest text-[10px] transition-all duration-300"
+                            data-branch="{{ data.branch }}"
+                            data-shift="{{ data.shift }}">
+                        Update Data
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- KPI CARDS -->
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <!-- Items Sold Card -->
+                    <div class="glass p-5 rounded-xl border-white/10 relative group overflow-hidden">
+                        <div class="absolute -inset-1 bg-[#50fa7b]/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        <h3 class="text-[#50fa7b] font-black mono text-xs uppercase tracking-wider mb-1 relative z-10">> Total Items Sold</h3>
+                        <div class="text-4xl font-black relative z-10">{{ data.prediction_demand|default:"-"|floatformat:0 }} <span class="text-white/30 text-base font-normal">units</span></div>
+                        <div class="text-[#50fa7b] text-[10px] font-bold mono mt-2 relative z-10">+12.5% from yesterday</div>
+                    </div>
+
+                    <!-- Revenue Card -->
+                    <div class="glass p-5 rounded-xl border-white/10 relative group overflow-hidden">
+                        <div class="absolute -inset-1 bg-[#ff79c6]/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        <h3 class="text-[#ff79c6] font-black mono text-xs uppercase tracking-wider mb-1 relative z-10">> Gross Revenue</h3>
+                        <div class="text-4xl font-black relative z-10"><span class="text-[#ff79c6]">$</span>{{ data.prediction_revenue|default:"-"|floatformat:2 }}</div>
+                        <div class="text-[#ff79c6] text-[10px] font-bold mono mt-2 relative z-10">+8.2% from yesterday</div>
+                    </div>  
+                </div>
+
+                <!-- TOP 9 ITEMS GRAPH -->
+                <div class="glass p-4 rounded-xl border-white/10 mb-2 relative group">
+                    <div class="absolute -inset-1 bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    <div class="flex justify-between items-center mb-3 relative z-10">
+                        <h3 class="text-white/80 font-black mono text-xs uppercase tracking-wider">> Top 9 Items by Volume</h3>
+                    </div>
+                    <div class="relative z-10 h-64 w-full">
+                        <canvas id="chart_{{ data.slug }}"
+                                class="inventory-chart"
+                                data-labels="{{ inventory_labels|escape }}"
+                                data-inventory="{{ data.inventory_data|default:'[]'|escape }}"
+                                data-branch="{{ data.branch|escape }}"
+                                data-shift="{{ data.shift|escape }}">
+                        </canvas>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <!-- DATA SYNC MODAL -->
+    <div id="dataSyncModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="glass p-8 md:p-10 rounded-3xl border border-yellow-500/20 shadow-[0_0_40px_rgba(255,220,0,0.15)] relative w-full max-w-2xl transform scale-95 transition-transform duration-300 overflow-hidden">
+            
+            <!-- Close Button -->
+            <button id="closeSyncModal" class="absolute top-6 right-6 text-white/50 hover:text-yellow-400 transition-colors z-20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            
+            <div class="flex items-start gap-4 mb-6">
+                <div class="text-yellow-400 mt-1 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </div>
+                <div>
+                    <h3 class="text-yellow-400 font-bold mono uppercase tracking-wider text-sm mb-2">> Manual Data Input</h3>
+                    <p class="text-white/70 text-sm leading-relaxed">
+                        The dataset for this branch and shift is out of date. Please submit the latest shift data below to generate an up-to-date forecast.
+                    </p>
+                </div>
+            </div>
+            
+            <form method="POST" action="{% url 'temp_dashboard' %}" class="grid md:grid-cols-4 gap-4 items-end bg-black/40 p-4 rounded-xl border border-yellow-500/20 mt-8">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="preview">
+                <input type="hidden" name="store_location" id="modal_store_location">
+                <input type="hidden" name="shift" id="modal_shift">
+                
+                <div class="flex flex-col">
+                    <label class="mono text-[10px] text-yellow-400 mb-1 uppercase tracking-wider font-bold">Target Date</label>
+                    <input type="date" name="target_date" required class="bg-black/60 border border-white/20 rounded-lg px-3 py-2 text-xs text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-colors mono" style="color-scheme: dark;">
+                </div>
+                <div class="flex flex-col">
+                    <label class="mono text-[10px] text-yellow-400 mb-1 uppercase tracking-wider font-bold">Prev Cups</label>
+                    <input type="number" step="0.1" name="prev_cups" placeholder="e.g. 100" required class="bg-black/60 border border-white/20 rounded-lg px-3 py-2 text-xs text-white placeholder-white/20 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-colors mono">
+                </div>
+                <div class="flex flex-col">
+                    <label class="mono text-[10px] text-yellow-400 mb-1 uppercase tracking-wider font-bold">Prev Rev ($)</label>
+                    <input type="number" step="0.01" name="prev_revenue" placeholder="e.g. 350.00" required class="bg-black/60 border border-white/20 rounded-lg px-3 py-2 text-xs text-white placeholder-white/20 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-colors mono">
+                </div>
+                <button type="submit" class="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-400 hover:text-black border border-yellow-500/50 px-4 py-2 rounded-lg font-bold uppercase tracking-widest text-xs transition-all duration-300 h-[34px]">
+                    Preview Forecast
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- Chart.js Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const neonGreen = '#50fa7b';
+            const neonPink = '#ff79c6';
+            const gridColor = 'rgba(255, 255, 255, 0.05)';
+            const textColor = 'rgba(255, 255, 255, 0.4)';
+
+            // Initialize all charts by finding their canvas elements
+            const chartCanvases = document.querySelectorAll('.inventory-chart');
+            
+            chartCanvases.forEach((canvas) => {
+                const rawLabels = JSON.parse(canvas.getAttribute('data-labels') || '[]');
+                const rawData = JSON.parse(canvas.getAttribute('data-inventory') || '[]');
+                const branchName = canvas.getAttribute('data-branch');
+                const shiftName = canvas.getAttribute('data-shift');
+                
+                // Combine into an array of objects for sorting
+                const combined = rawLabels.map((label, index) => {
+                    return { label: label, value: rawData[index] || 0 };
+                });
+                
+                // Sort descending based on value
+                combined.sort((a, b) => b.value - a.value);
+                
+                // Separate back into arrays
+                const labels = combined.map(item => item.label);
+                const inventoryData = combined.map(item => item.value);
+
+                // Log Model 3 output to console
+                const model3Output = labels.map((label, index) => {
+                    return label + ': ' + inventoryData[index];
+                });
+                console.log("Model 3 Prediction (" + branchName + " | " + shiftName + "):", model3Output);
+
+                const ctx = canvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Units Sold',
+                            data: inventoryData,
+                            borderColor: neonPink,
+                            backgroundColor: 'rgba(255, 121, 198, 0.15)', // Neon pink with 15% opacity for the area glow
+                            borderWidth: 2,
+                            pointBackgroundColor: neonGreen,
+                            pointBorderColor: '#0a0a0a',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            fill: true,
+                            tension: 0 // Sharp straight lines for a highly professional, analytical look
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                                titleFont: { family: 'JetBrains Mono', size: 12 },
+                                bodyFont: { family: 'JetBrains Mono', size: 12, weight: 'bold' },
+                                padding: 12,
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: gridColor, drawBorder: false },
+                                ticks: { color: textColor, font: { family: 'JetBrains Mono', size: 10 } }
+                            },
+                            x: {
+                                grid: { display: false, drawBorder: false },
+                                ticks: { 
+                                    color: textColor, font: { family: 'JetBrains Mono', size: 10 },
+                                    maxRotation: 45, minRotation: 45
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Branch & Shift Toggle Logic
+            const branchBtns = document.querySelectorAll('.branch-filter-btn');
+            const shiftBtns = document.querySelectorAll('.shift-filter-btn');
+            const dashboardCards = document.querySelectorAll('.dashboard-card');
+
+            let currentBranch = '{{ branches.0.slug }}';
+            let currentShift = '{{ shifts.0.slug }}';
+
+            function updateCards() {
+                dashboardCards.forEach(card => {
+                    if (card.getAttribute('data-branch') === currentBranch && card.getAttribute('data-shift') === currentShift) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            branchBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    branchBtns.forEach(b => b.className = "branch-filter-btn bg-black/40 text-white/50 border border-white/10 hover:border-[#ff79c6] hover:text-[#ff79c6] px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:scale-105");
+                    btn.className = "branch-filter-btn bg-[#50fa7b] text-black border border-transparent shadow-[0_0_15px_rgba(80,250,123,0.2)] px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:scale-105";
+
+                    currentBranch = btn.getAttribute('data-target-branch');
+                    updateCards();
+                });
+            });
+
+            shiftBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    shiftBtns.forEach(b => b.className = "shift-filter-btn bg-black/40 text-white/50 border border-white/10 hover:border-[#50fa7b] hover:text-[#50fa7b] px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:scale-105");
+                    btn.className = "shift-filter-btn bg-[#ff79c6] text-black border border-transparent shadow-[0_0_15px_rgba(255,121,198,0.2)] px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:scale-105";
+
+                    currentShift = btn.getAttribute('data-target-shift');
+                    updateCards();
+                });
+            });
+
+            // Data Sync Modal Logic
+            const dataSyncModal = document.getElementById('dataSyncModal');
+            if (dataSyncModal) {
+                const modalContent = dataSyncModal.querySelector('.glass');
+                const closeSyncModal = document.getElementById('closeSyncModal');
+                const openSyncButtons = document.querySelectorAll('.open-sync-modal');
+                const modalBranchInput = document.getElementById('modal_store_location');
+                const modalShiftInput = document.getElementById('modal_shift');
+
+                function openSyncModal(branch, shift) {
+                    if (modalBranchInput) modalBranchInput.value = branch;
+                    if (modalShiftInput) modalShiftInput.value = shift;
+
+                    dataSyncModal.classList.remove('hidden');
+                    dataSyncModal.classList.add('flex');
+                    setTimeout(() => {
+                        dataSyncModal.classList.remove('opacity-0');
+                        if (modalContent) {
+                            modalContent.classList.remove('scale-95');
+                            modalContent.classList.add('scale-100');
+                        }
+                    }, 10);
+                }
+
+                function hideSyncModal() {
+                    dataSyncModal.classList.add('opacity-0');
+                    if (modalContent) {
+                        modalContent.classList.remove('scale-100');
+                        modalContent.classList.add('scale-95');
+                    }
+                    setTimeout(() => {
+                        dataSyncModal.classList.add('hidden');
+                        dataSyncModal.classList.remove('flex');
+                    }, 300);
+                }
+
+                openSyncButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        openSyncModal(btn.dataset.branch, btn.dataset.shift);
+                    });
+                });
+
+                if (closeSyncModal) closeSyncModal.addEventListener('click', hideSyncModal);
+                dataSyncModal.addEventListener('click', (e) => { if (e.target === dataSyncModal) hideSyncModal(); });
+            }
+        });
+    </script>
+{% endblock content %}

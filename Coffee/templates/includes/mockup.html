@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MJ Coffee POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      overflow-x: hidden;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .pink-glow {
+      box-shadow: 0 0 30px rgba(255,121,198,0.2);
+    }
+
+    .green-glow {
+      box-shadow: 0 0 30px rgba(80,250,123,0.2);
+    }
+
+    .scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+      background: #ff79c6;
+      border-radius: 20px;
+    }
+
+    .animate-float {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen flex">
+
+  <!-- SIDEBAR -->
+  <aside class="w-24 lg:w-72 glass border-r border-white/10 flex flex-col justify-between p-4 lg:p-6">
+    <div>
+      <div class="flex items-center gap-3 mb-10">
+        <div class="w-12 h-12 rounded-2xl bg-[#ff79c6] flex items-center justify-center text-black font-black text-xl pink-glow">
+          MJ
+        </div>
+        <div class="hidden lg:block">
+          <h1 class="font-black text-xl tracking-tight">MJ COFFEE</h1>
+          <p class="text-white/40 text-xs mono">AUTONOMOUS POS</p>
+        </div>
+      </div>
+
+      <nav class="space-y-3">
+        <button class="w-full glass border border-[#ff79c6]/30 bg-[#ff79c6]/10 text-[#ff79c6] rounded-2xl p-4 flex items-center gap-4 hover:scale-[1.02] transition-all">
+          <span class="text-xl">☕</span>
+          <span class="hidden lg:block font-bold">Menu</span>
+        </button>
+
+        <button class="w-full glass hover:border-[#50fa7b]/30 rounded-2xl p-4 flex items-center gap-4 transition-all border border-transparent">
+          <span class="text-xl">📊</span>
+          <span class="hidden lg:block text-white/60">Analytics</span>
+        </button>
+
+        <button class="w-full glass hover:border-[#50fa7b]/30 rounded-2xl p-4 flex items-center gap-4 transition-all border border-transparent">
+          <span class="text-xl">🧾</span>
+          <span class="hidden lg:block text-white/60">Orders</span>
+        </button>
+
+        <button class="w-full glass hover:border-[#50fa7b]/30 rounded-2xl p-4 flex items-center gap-4 transition-all border border-transparent">
+          <span class="text-xl">⚙️</span>
+          <span class="hidden lg:block text-white/60">Settings</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="glass rounded-2xl p-4 border border-[#50fa7b]/20 green-glow animate-float">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-2 h-2 bg-[#50fa7b] rounded-full animate-pulse"></div>
+        <p class="mono text-xs text-[#50fa7b] uppercase">System Online</p>
+      </div>
+      <p class="text-white/40 text-xs leading-relaxed hidden lg:block">
+        AI recommendation engine operational.
+      </p>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+
+    <!-- MENU -->
+    <section class="flex-1 p-6 overflow-y-auto scrollbar">
+
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+        <div>
+          <h2 class="text-4xl font-black italic uppercase leading-none">
+            Coffee <span class="text-[#ff79c6]">POS</span>
+          </h2>
+          <p class="text-white/40 mono text-sm mt-2">
+            Real-time autonomous ordering interface.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl px-5 py-4 flex items-center gap-4 border border-white/10 w-full lg:w-[350px]">
+          <span class="text-white/40">🔍</span>
+          <input id="search" type="text" placeholder="Search coffee..."
+            class="bg-transparent outline-none w-full text-sm placeholder:text-white/30">
+        </div>
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="flex gap-3 mb-8 overflow-x-auto pb-2">
+        <button class="px-5 py-3 rounded-full bg-[#ff79c6] text-black font-bold whitespace-nowrap">
+          All Drinks
+        </button>
+        <button class="px-5 py-3 rounded-full glass border border-white/10 text-white/60 whitespace-nowrap">
+          Espresso
+        </button>
+        <button class="px-5 py-3 rounded-full glass border border-white/10 text-white/60 whitespace-nowrap">
+          Latte
+        </button>
+        <button class="px-5 py-3 rounded-full glass border border-white/10 text-white/60 whitespace-nowrap">
+          Cold Brew
+        </button>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div id="products" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+
+      </div>
+    </section>
+
+    <!-- CART -->
+    <aside class="w-full lg:w-[420px] glass border-l border-white/10 flex flex-col">
+
+      <div class="p-6 border-b border-white/10">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-2xl font-black uppercase italic">
+            Active Order
+          </h3>
+          <div class="text-[#50fa7b] mono text-xs uppercase animate-pulse">
+            LIVE
+          </div>
+        </div>
+
+        <p class="text-white/40 text-sm mono">
+          Queue ID #A-204
+        </p>
+      </div>
+
+      <!-- CART ITEMS -->
+      <div id="cartItems" class="flex-1 overflow-y-auto scrollbar p-6 space-y-4">
+
+        <div class="text-white/30 text-sm mono text-center pt-20">
+          No orders yet.
+        </div>
+
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="p-6 border-t border-white/10 space-y-5 bg-black/20">
+
+        <div class="space-y-3">
+          <div class="flex justify-between text-white/50">
+            <span>Subtotal</span>
+            <span id="subtotal">₱0</span>
+          </div>
+
+          <div class="flex justify-between text-white/50">
+            <span>Tax</span>
+            <span id="tax">₱0</span>
+          </div>
+
+          <div class="flex justify-between text-xl font-black text-[#50fa7b]">
+            <span>Total</span>
+            <span id="total">₱0</span>
+          </div>
+        </div>
+
+        <button id="checkoutBtn"
+          class="w-full bg-[#ff79c6] hover:bg-white hover:text-[#ff79c6] text-black font-black py-5 rounded-2xl transition-all duration-300 uppercase tracking-widest pink-glow">
+          Complete Payment
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const coffees = [
+      {
+        name: 'Caramel Latte',
+        price: 180,
+        image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=1200&auto=format&fit=crop'
+      },
+      {
+        name: 'Iced Mocha',
+        price: 190,
+        image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=1200&auto=format&fit=crop'
+      },
+      {
+        name: 'Espresso Shot',
+        price: 120,
+        image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1200&auto=format&fit=crop'
+      },
+      {
+        name: 'Vanilla Cold Brew',
+        price: 210,
+        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200&auto=format&fit=crop'
+      },
+      {
+        name: 'Cappuccino',
+        price: 175,
+        image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop'
+      },
+      {
+        name: 'Matcha Espresso',
+        price: 220,
+        image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1200&auto=format&fit=crop'
+      }
+    ];
+
+    const productsContainer = document.getElementById('products');
+    const cartItems = document.getElementById('cartItems');
+    const subtotalEl = document.getElementById('subtotal');
+    const taxEl = document.getElementById('tax');
+    const totalEl = document.getElementById('total');
+    const searchInput = document.getElementById('search');
+
+    let cart = [];
+
+    function renderProducts(items) {
+      productsContainer.innerHTML = '';
+
+      items.forEach((coffee, index) => {
+        const card = document.createElement('div');
+
+        card.className = 'glass rounded-3xl overflow-hidden border border-white/10 hover:border-[#ff79c6]/40 hover:-translate-y-1 transition-all duration-300 group';
+
+        card.innerHTML = `
+          <div class="relative overflow-hidden">
+            <img src="${coffee.image}" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+            <div class="absolute top-4 right-4 bg-[#50fa7b] text-black text-xs font-black px-3 py-2 rounded-full mono">
+              AVAILABLE
+            </div>
+          </div>
+
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-4 gap-3">
+              <div>
+                <h3 class="font-black text-xl mb-1">${coffee.name}</h3>
+                <p class="text-white/40 text-sm">Freshly brewed premium coffee.</p>
+              </div>
+              <div class="text-[#ff79c6] font-black text-xl">₱${coffee.price}</div>
+            </div>
+
+            <button onclick="addToCart(${index})"
+              class="w-full bg-[#ff79c6]/10 border border-[#ff79c6]/30 text-[#ff79c6] hover:bg-[#ff79c6] hover:text-black py-4 rounded-2xl font-black transition-all duration-300 uppercase tracking-wider">
+              Add To Order
+            </button>
+          </div>
+        `;
+
+        productsContainer.appendChild(card);
+      });
+    }
+
+    function addToCart(index) {
+      const coffee = coffees[index];
+      cart.push(coffee);
+      renderCart();
+    }
+
+    function renderCart() {
+      cartItems.innerHTML = '';
+
+      if(cart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="text-white/30 text-sm mono text-center pt-20">
+            No orders yet.
+          </div>
+        `;
+        updateTotals();
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const div = document.createElement('div');
+
+        div.className = 'glass rounded-2xl p-4 flex gap-4 items-center border border-white/10';
+
+        div.innerHTML = `
+          <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl">
+
+          <div class="flex-1">
+            <h4 class="font-bold">${item.name}</h4>
+            <p class="text-white/40 text-sm">₱${item.price}</p>
+          </div>
+
+          <button onclick="removeItem(${index})"
+            class="text-red-400 hover:text-red-300 text-sm mono">
+            REMOVE
+          </button>
+        `;
+
+        cartItems.appendChild(div);
+      });
+
+      updateTotals();
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function updateTotals() {
+      const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+      const tax = subtotal * 0.12;
+      const total = subtotal + tax;
+
+      subtotalEl.textContent = `₱${subtotal.toFixed(2)}`;
+      taxEl.textContent = `₱${tax.toFixed(2)}`;
+      totalEl.textContent = `₱${total.toFixed(2)}`;
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      const value = e.target.value.toLowerCase();
+
+      const filtered = coffees.filter(coffee =>
+        coffee.name.toLowerCase().includes(value)
+      );
+
+      renderProducts(filtered);
+    });
+
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      if(cart.length === 0) {
+        alert('No items in cart.');
+        return;
+      }
+
+      alert('Payment Successful! ☕');
+      cart = [];
+      renderCart();
+    });
+
+    renderProducts(coffees);
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<aside class="w-64 glass border-y-0 border-l-0 border-r border-white/10 flex flex-col h-screen sticky top-0 overflow-y-auto">
+    <div class="p-6 border-b border-white/10">
+        <div class="text-2xl font-black tracking-tighter text-[#ff79c6]">MJ<span class="text-white/30 text-xs mono uppercase">Ecosystem</span></div>
+    </div>
+    
+    <nav class="flex-1 p-4">
+        <ul class="space-y-2 mono text-sm uppercase tracking-wider font-bold">
+            <li>
+                <a href="{% url 'temp_dashboard' %}" class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'temp_dashboard' %}text-[#50fa7b] bg-white/5{% else %}text-white/50 hover:text-[#50fa7b] hover:bg-white/5{% endif %} transition-colors">
+                    > Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'inventory' %}" class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'inventory' %}text-[#50fa7b] bg-white/5{% else %}text-white/50 hover:text-[#50fa7b] hover:bg-white/5{% endif %} transition-colors">
+                    > Inventory
+                </a>
+            </li>
+            <li>
+                <a href="#" class="block px-4 py-3 rounded-lg text-white/50 hover:text-[#50fa7b] hover:bg-white/5 transition-colors">
+                    > Sales
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'manual_input' %}" class="block px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'manual_input' %}text-[#ff79c6] bg-white/5{% else %}text-white/50 hover:text-[#ff79c6] hover:bg-white/5{% endif %} transition-colors">
+                    > Manual Input
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="p-6 border-t border-white/10">
+        <a href="{% url 'landing' %}" class="block w-full text-center bg-[#ff79c6]/10 hover:bg-[#ff79c6]/20 text-[#ff79c6] px-4 py-3 rounded-lg mono text-xs uppercase font-bold transition-colors border border-[#ff79c6]/20">
+            Sign Out
+        </a>
+    </div>
+</aside>

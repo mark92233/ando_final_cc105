@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan A | Autonomous Retail Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains+Mono', monospace; }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-pink-glow { text-shadow: 0 0 10px rgba(255, 121, 198, 0.5); }
+        .neon-green-glow { text-shadow: 0 0 10px rgba(80, 250, 123, 0.5); }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes slide-data {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(1000%); }
+        }
+        .animate-slide-data { animation: slide-data 3s linear infinite; }
+        @keyframes orbit-a {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(30px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(30px) rotate(-360deg); }
+        }
+        .animate-orbit-a { animation: orbit-a 4s linear infinite; }
+    </style>
+</head>
+<body class="bg-[#0a0a0a] text-white overflow-x-hidden">
+
+    <!-- NAVIGATION -->
+    <nav class="flex justify-between items-center px-8 py-6 sticky top-0 z-50 glass border-b border-white/10">
+        <div class="text-2xl font-black tracking-tighter text-[#ff79c6]">MJ<span class="text-white/30 text-xs mono uppercase">Ecosystem</span></div>
+        <div class="hidden md:flex gap-10 text-xs font-bold tracking-widest text-white/60">
+            <a href="#" class="hover:text-[#ff79c6] transition-colors">ECOSYSTEM</a>
+            <a href="#" class="hover:text-[#ff79c6] transition-colors">ANALYTICS</a>
+            <a href="#" class="hover:text-[#ff79c6] transition-colors">HARDWARE</a>
+        </div>
+        <button class="open-login-modal bg-[#ff79c6] text-black px-6 py-2 rounded-full font-bold text-sm hover:scale-105 transition-transform">
+            LOGIN
+        </button>
+    </nav>
+
+    <!-- HERO SECTION WITH INTEGRATED DATA STREAMS AND PARTICLE BACKGROUND -->
+    <main class="relative bg-[#0a0a0a] overflow-hidden pt-20 pb-32">
+        
+        <!-- SUBTLE BACKGROUND INTERACTIVE MESH -->
+        <div class="absolute inset-0 opacity-20 z-0">
+            <canvas id="hero-mesh" class="w-full h-full"></canvas>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+            
+            <!-- TEXTUAL CONTENT (LEFT) -->
+            <div class="relative group">
+                <!-- Decorative corner elements -->
+                <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#ff79c6] group-hover:scale-110 transition-transform"></div>
+                <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#50fa7b] group-hover:scale-110 transition-transform"></div>
+
+                <div class="pl-8 pt-8 pb-10 pr-6">
+                    <h1 class="text-6xl lg:text-7xl font-black leading-[0.9] mb-8 uppercase italic tracking-tight">
+                        The Self-Learning <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#50fa7b] to-[#ff79c6] neon-pink-glow">Coffee Shop.</span>
+                    </h1>
+                    <p class="text-white/60 text-lg max-w-lg mb-10 leading-relaxed font-mono">
+                        <span class="text-[#ff79c6] font-bold">// SYSTEM_A_OPERATIONAL //</span><br>
+                        Our Closed-Loop AI POS ecosystem connects every transaction directly to future business intelligence, maximizing efficiency and minimizing waste.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="open-login-modal bg-[#ff79c6] text-black px-8 py-4 font-black rounded-full border-2 border-[#ff79c6] hover:bg-transparent hover:text-[#ff79c6] transition-all duration-300 group">
+                        LOGIN 
+                        </button>
+                        <a href="#workflow" class="inline-block border-2 border-[#50fa7b] text-[#50fa7b] px-8 py-4 font-black rounded-full hover:bg-[#50fa7b] hover:text-black transition-all duration-300">
+                            LEARN MORE <span class="group-hover:translate-x-1 transition-transform inline-block">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTEGRATED DIAGRAM AND DATA STREAMS (RIGHT) -->
+            <div class="relative flex justify-center lg:justify-end">
+                
+                <!-- Floating Data Particles (Interactive) -->
+                <div class="absolute inset-0 opacity-40 z-0 scale-125" id="hero-particles"></div>
+                
+                <!-- Glassmorphism Container with Float Animation -->
+                <div class="relative z-10 animate-float p-4 rounded-3xl bg-black/40 border border-white/5 backdrop-blur-xl group overflow-hidden">
+                    
+                    <!-- Internal Glow and Overlay -->
+                    <div class="absolute -inset-10 bg-[#50fa7b]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+
+                    <!-- DIAGRAM INTEGRATION -->
+                    <div class="relative overflow-hidden rounded-2xl group-hover:scale-[1.01] transition-transform duration-500">
+                        
+                        <!-- Pulsing Green Accent Element (Integrates with visual) -->
+                        <div class="absolute top-[28%] left-[62%] w-6 h-6 border-t border-r border-[#50fa7b] animate-pulse z-20"></div>
+
+                        <!-- Flowing Data Light Stream (Horizontal) -->
+                        <div class="absolute top-[16%] left-0 w-full h-1 z-30 pointer-events-none">
+                            <div class="w-20 h-full bg-gradient-to-r from-transparent via-[#ff79c6] to-transparent animate-slide-data"></div>
+                        </div>
+
+                        <!-- Floating Code Snippet Overlay (Subtle) -->
+                        <div class="absolute bottom-24 left-24 text-[10px] text-white/10 font-mono z-30 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                            PREDICTION:: cups_today = df.query('prev_cups >= 30').forecast_demand.mean();
+                        </div>
+
+                        <!-- YOUR DIAGRAM IMAGE -->
+                        <img src="../static/img/hero.png" alt="Closed-Loop AI Process" class="w-full h-auto block opacity-100 mix-blend-screen group-hover:opacity-90 transition-opacity relative z-10" />
+                    </div>
+
+                    <!-- Floating System Icons surrounding the image for integration -->
+                    <div class="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 text-2xl text-white/50 animate-orbit-a pointer-events-none z-30">
+                        ✦
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- THE CLOSED LOOP WORKFLOW -->
+    <section id="workflow" class="max-w-7xl mx-auto px-8 py-20">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-black uppercase italic mb-4">The <span class="text-[#ff79c6]">Closed-Loop</span> Cycle</h2>
+            <p class="text-white/50 mono text-sm">Automating the data flow from wallet to prep list.</p>
+        </div>
+        <div class="grid md:grid-cols-4 gap-8 relative">
+            <!-- Connecting line -->
+            <div class="hidden md:block absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-y-1/2 z-0"></div>
+            
+            <div class="glass p-6 rounded-xl border-white/10 relative z-10 hover:border-[#ff79c6] transition-all duration-300 group hover:-translate-y-2">
+                <div class="w-12 h-12 bg-[#0a0a0a] border border-white/20 rounded-full flex items-center justify-center mb-4 text-[#ff79c6] font-black group-hover:scale-110 group-hover:border-[#ff79c6] transition-all">01</div>
+                <h3 class="font-bold mb-2">Real-Time Capture</h3>
+                <p class="text-white/40 text-xs leading-relaxed">Cashiers process sales via POS. Every transaction is instantly logged into a centralized database.</p>
+            </div>
+
+            <div class="glass p-6 rounded-xl border-white/10 relative z-10 hover:border-[#50fa7b] transition-all duration-300 group hover:-translate-y-2">
+                <div class="w-12 h-12 bg-[#0a0a0a] border border-white/20 rounded-full flex items-center justify-center mb-4 text-[#50fa7b] font-black group-hover:scale-110 group-hover:border-[#50fa7b] transition-all">02</div>
+                <h3 class="font-bold mb-2">Auto-Engineering</h3>
+                <p class="text-white/40 text-xs leading-relaxed">Shift actuals (cups & revenue) are automatically aggregated and passed as inputs to the AI models.</p>
+            </div>
+
+            <div class="glass p-6 rounded-xl border-white/10 relative z-10 hover:border-[#ff79c6] transition-all duration-300 group hover:-translate-y-2">
+                <div class="w-12 h-12 bg-[#0a0a0a] border border-white/20 rounded-full flex items-center justify-center mb-4 text-[#ff79c6] font-black group-hover:scale-110 group-hover:border-[#ff79c6] transition-all">03</div>
+                <h3 class="font-bold mb-2">Chained Forecast</h3>
+                <p class="text-white/40 text-xs leading-relaxed">Our Model Trio (Demand, Finance, Inventory) runs sequential predictions for the next shift.</p>
+            </div>
+
+            <div class="glass p-6 rounded-xl border-white/10 relative z-10 hover:border-[#50fa7b] transition-all duration-300 group hover:-translate-y-2">
+                <div class="w-12 h-12 bg-[#0a0a0a] border border-white/20 rounded-full flex items-center justify-center mb-4 text-[#50fa7b] font-black group-hover:scale-110 group-hover:border-[#50fa7b] transition-all">04</div>
+                <h3 class="font-bold mb-2">Operational Action</h3>
+                <p class="text-white/40 text-xs leading-relaxed">Managers receive a highly-accurate Prep List to maximize sales and eliminate food waste.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADVANTAGE GRID -->
+    <section class="bg-white/[0.02] border-y border-white/10 py-24 px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- FEATURE 1 -->
+                <div class="p-6 border border-white/10 hover:border-[#ff79c6] hover:bg-[#ff79c6]/5 transition-colors group">
+                    <div class="text-[#ff79c6] font-black mb-2">[Zero Manual Entry]</div>
+                    <p class="text-white/40 text-sm">POS and Database automatically sync, removing human error.</p>
+                </div>
+                <!-- FEATURE 2 -->
+                <div class="p-6 border border-white/10 hover:border-[#50fa7b] hover:bg-[#50fa7b]/5 transition-colors">
+                    <div class="text-[#50fa7b] font-black mb-2">[High Accuracy]</div>
+                    <p class="text-white/40 text-sm">Powered by Random Forest. R² scores up to 0.95 for core items.</p>
+                </div>
+                <!-- FEATURE 3 -->
+                <div class="p-6 border border-white/10 hover:border-[#ff79c6] hover:bg-[#ff79c6]/5 transition-colors">
+                    <div class="text-[#ff79c6] font-black mb-2">[Waste Reduction]</div>
+                    <p class="text-white/40 text-sm">Predict exactly what will sell to directly reduce food spoilage.</p>
+                </div>
+                <!-- FEATURE 4 -->
+                <div class="p-6 border border-white/10 hover:border-[#50fa7b] hover:bg-[#50fa7b]/5 transition-colors">
+                    <div class="text-[#50fa7b] font-black mb-2">[Closed-Loop]</div>
+                    <p class="text-white/40 text-sm">The system retrains periodically using real-time actual sales data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECHNICAL CORE -->
+    <section class="max-w-7xl mx-auto px-8 py-24">
+        <div class="glass p-8 md:p-12 rounded-3xl border-white/10 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-[#ff79c6]/5 blur-[100px] rounded-full"></div>
+            <h2 class="text-2xl font-black mb-8 mono text-[#ff79c6]">> SYSTEM_ARCHITECTURE.md</h2>
+            
+            <div class="grid md:grid-cols-3 gap-10">
+                <div>
+                    <h4 class="text-[#ff79c6] mono text-xs mb-3 uppercase">Model Engine</h4>
+                    <div class="text-white/80 text-sm mb-1">Supervised Learning (Regression)</div>
+                    <div class="text-white/40 text-sm">Random Forest Regressors<br>(Trio Architecture)</div>
+                </div>
+                <div>
+                    <h4 class="text-[#ff79c6] mono text-xs mb-3 uppercase">Target Variables</h4>
+                    <ul class="text-white/60 text-sm space-y-1 mono text-xs">
+                        <li>> Total Cups (Volume)</li>
+                        <li>> Gross Revenue (Finance)</li>
+                        <li>> 9-Category Breakdown (Inv)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[#ff79c6] mono text-xs mb-3 uppercase">Tech Stack</h4>
+                    <div class="text-white/60 text-sm space-y-1">
+                        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#50fa7b]"></span> Django / FastAPI Backend</div>
+                        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#50fa7b]"></span> PostgreSQL Database</div>
+                        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#50fa7b]"></span> React & Tailwind CSS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SYSTEM STATUS FOOTER -->
+    <footer class="px-8 py-4 border-t border-white/10 flex justify-between items-center bg-black">
+        <div class="flex gap-6 text-[10px] mono text-white/30">
+            <span>MENU</span>
+            <span>ANALYTICS</span>
+            <span>HARDWARE</span>
+            <span>CASE STUDIES</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="mono text-[10px] text-white/30 uppercase">System Status:</span>
+            <span class="text-[#ff79c6] mono text-[10px] animate-pulse uppercase font-bold">Operational</span>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="glass p-8 md:p-10 rounded-3xl border border-white/20 shadow-[0_0_40px_rgba(255,121,198,0.15)] relative w-full max-w-md transform scale-95 transition-transform duration-300 overflow-hidden">
+            
+            <!-- Decorative Background Glows inside Modal -->
+            <div class="absolute -top-20 -right-20 w-48 h-48 bg-[#ff79c6]/20 blur-[60px] rounded-full pointer-events-none z-0"></div>
+            <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-[#50fa7b]/10 blur-[60px] rounded-full pointer-events-none z-0"></div>
+
+            <!-- Close Button -->
+            <button id="closeModal" class="absolute top-6 right-6 text-white/50 hover:text-[#ff79c6] transition-colors z-20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <h2 class="text-3xl font-black mb-6 uppercase italic text-center relative z-10">System <span class="text-[#ff79c6]">Login</span></h2>
+            
+            <form action="#" method="POST" class="space-y-6 relative z-10">
+                <!-- Django CSRF token for security -->
+                {% csrf_token %}
+                
+                {% if error %}
+                <div class="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg mono text-xs text-center mb-2">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <div>
+                    <label class="block text-white/80 mono text-xs mb-2 uppercase font-bold tracking-wider">Email Address</label>
+                    <input type="email" name="email" required class="w-full bg-black/60 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] transition-all mono text-sm" placeholder="operator@mjsystem.com">
+                </div>
+                <div>
+                    <label class="block text-white/80 mono text-xs mb-2 uppercase font-bold tracking-wider">Password</label>
+                    <input type="password" name="password" required class="w-full bg-black/60 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] transition-all mono text-sm" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-[#ff79c6] text-black px-8 py-4 font-black rounded-lg hover:bg-white hover:text-[#ff79c6] shadow-[0_0_20px_rgba(255,121,198,0.3)] hover:shadow-[0_0_30px_rgba(255,121,198,0.5)] hover:scale-[1.02] transition-all duration-300 uppercase tracking-wider mt-4">
+                    Authenticate
+                </button>
+
+                <!-- Closed System Note -->
+                <div class="mt-8 pt-6 border-t border-white/10 text-center">
+                    <p class="text-white/50 mono text-xs leading-relaxed">
+                        <span class="text-[#ff79c6] font-bold">/// NOTE:</span> The system is a closed system. Accounts can only be provisioned by the system administrator.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const loginModal = document.getElementById('loginModal');
+        const modalContent = loginModal.querySelector('.glass');
+        const closeModal = document.getElementById('closeModal');
+        const loginButtons = document.querySelectorAll('.open-login-modal');
+
+        function openModal() {
+            loginModal.classList.remove('hidden');
+            loginModal.classList.add('flex');
+            // Small delay to allow display:flex to apply before animating opacity
+            setTimeout(() => {
+                loginModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function hideModal() {
+            loginModal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                loginModal.classList.add('hidden');
+                loginModal.classList.remove('flex');
+            }, 300); // Matches the CSS duration
+        }
+
+        loginButtons.forEach(btn => btn.addEventListener('click', openModal));
+        closeModal.addEventListener('click', hideModal);
+        
+        // Close on outside click
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                hideModal();
+            }
+        });
+
+        // Reopen modal automatically if there is an error
+        const systemError = "{{ error|default:''|escapejs }}";
+        if (systemError !== "") {
+            setTimeout(openModal, 50); // Slight delay ensures smooth transition after page load
+        }
+    </script>
+</body>
+</html>
